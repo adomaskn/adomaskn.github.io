@@ -1,19 +1,20 @@
-import React from "react";
-import { Canvas } from "@react-three/fiber";
-import { PointerLockControls } from "@react-three/drei";
-import { useTexture } from "@react-three/drei";
-import { Text } from "@react-three/drei";
-import { DoubleSide } from "three";
-import { useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { PointerLockControls, Text, useTexture } from "@react-three/drei";
 import { Physics, useBox, usePlane, useSphere } from "@react-three/cannon";
-import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect } from "react";
-import { Raycaster, Vector2, Vector3 } from "three";
+import { DoubleSide, Raycaster, Vector2, Vector3 } from "three";
+import { galleryContent, homeContent } from "./contentConfig";
+
+const ROOM_HALF_WIDTH = 2.5;
+const ROOM_HALF_LENGTH = 5;
+const ROOM_HALF_HEIGHT = 1;
+const PLAYER_START = [0, 0.2, 0];
+const GITHUB_URL = galleryContent.githubUrl;
 
 function FloorPhysics() {
   usePlane(() => ({
     type: "Static",
-    position: [0, -1, 0],
+    position: [0, -ROOM_HALF_HEIGHT, 0],
     rotation: [-Math.PI / 2, 0, 0],
   }));
   return null;
@@ -22,96 +23,93 @@ function FloorPhysics() {
 function WallPhysics() {
   useBox(() => ({
     type: "Static",
-    position: [0, 0, -5],
-    args: [5, 2, 0.2],
+    position: [0, 0, -ROOM_HALF_LENGTH],
+    args: [ROOM_HALF_WIDTH * 2, ROOM_HALF_HEIGHT * 2, 0.2],
   }));
   useBox(() => ({
     type: "Static",
-    position: [-2.5, 0, 0],
-    rotation: [0, Math.PI / 2, 0],
-    args: [10, 2, 0.2],
-  }));
-  useBox(() => ({
-    type: "Static",
-    position: [2.5, 0, 0],
-    rotation: [0, -Math.PI / 2, 0],
-    args: [10, 2, 0.2],
-  }));
-  useBox(() => ({
-    type: "Static",
-    position: [0, 0, 5],
+    position: [0, 0, ROOM_HALF_LENGTH],
     rotation: [0, Math.PI, 0],
-    args: [5, 2, 0.2],
+    args: [ROOM_HALF_WIDTH * 2, ROOM_HALF_HEIGHT * 2, 0.2],
+  }));
+  useBox(() => ({
+    type: "Static",
+    position: [-ROOM_HALF_WIDTH, 0, 0],
+    rotation: [0, Math.PI / 2, 0],
+    args: [ROOM_HALF_LENGTH * 2, ROOM_HALF_HEIGHT * 2, 0.2],
+  }));
+  useBox(() => ({
+    type: "Static",
+    position: [ROOM_HALF_WIDTH, 0, 0],
+    rotation: [0, -Math.PI / 2, 0],
+    args: [ROOM_HALF_LENGTH * 2, ROOM_HALF_HEIGHT * 2, 0.2],
   }));
   return null;
 }
 
-function Room({ pictureRefs }) {
-  const pictures = useTexture([
-    "/img/wall_1.jpg",
-    "/img/wall_2.jpg",
-    "/img/wall_3.jpg",
-    "/img/wall_4.jpg",
-  ]);
+function Room({ pictureRefs, doorRef }) {
+  const pictures = useTexture(galleryContent.pictures.map((p) => p.image));
 
   return (
     <group>
-      <mesh position={[0, 0, -5]}>
-        <planeGeometry args={[5, 2]} />
+      <mesh position={[0, 0, -ROOM_HALF_LENGTH]}>
+        <planeGeometry args={[ROOM_HALF_WIDTH * 2, ROOM_HALF_HEIGHT * 2]} />
         <meshBasicMaterial color="#fff7d6" side={DoubleSide} />
       </mesh>
 
-      <mesh position={[0, 0, 5]} rotation={[0, Math.PI, 0]}>
-        <planeGeometry args={[5, 2]} />
+      <mesh position={[0, 0, ROOM_HALF_LENGTH]} rotation={[0, Math.PI, 0]}>
+        <planeGeometry args={[ROOM_HALF_WIDTH * 2, ROOM_HALF_HEIGHT * 2]} />
         <meshBasicMaterial color="#fff7d6" side={DoubleSide} />
       </mesh>
 
-      <mesh position={[-2.5, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
-        <planeGeometry args={[10, 2]} />
+      <mesh position={[-ROOM_HALF_WIDTH, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
+        <planeGeometry args={[ROOM_HALF_LENGTH * 2, ROOM_HALF_HEIGHT * 2]} />
         <meshBasicMaterial color="#fff4cc" side={DoubleSide} />
       </mesh>
 
-      <mesh position={[2.5, 0, 0]} rotation={[0, -Math.PI / 2, 0]}>
-        <planeGeometry args={[10, 2]} />
+      <mesh position={[ROOM_HALF_WIDTH, 0, 0]} rotation={[0, -Math.PI / 2, 0]}>
+        <planeGeometry args={[ROOM_HALF_LENGTH * 2, ROOM_HALF_HEIGHT * 2]} />
         <meshBasicMaterial color="#fff1bf" side={DoubleSide} />
       </mesh>
 
-      <mesh position={[0, -1, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[5, 10]} />
+      <mesh position={[0, -ROOM_HALF_HEIGHT, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[ROOM_HALF_WIDTH * 2, ROOM_HALF_LENGTH * 2]} />
         <meshBasicMaterial color="#94a3b8" side={DoubleSide} />
       </mesh>
 
-      <mesh position={[0, 1, 0]} rotation={[Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[5, 10]} />
+      <mesh position={[0, ROOM_HALF_HEIGHT, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[ROOM_HALF_WIDTH * 2, ROOM_HALF_LENGTH * 2]} />
         <meshBasicMaterial color="#e2e8f0" side={DoubleSide} />
       </mesh>
 
       <GalleryPicture
         pictureRef={pictureRefs[0]}
         texture={pictures[0]}
-        position={[-2.39, 0, -2.5]}
+        position={[-ROOM_HALF_WIDTH + 0.11, 0, -2.5]}
         rotation={[0, Math.PI / 2, 0]}
       />
       <GalleryPicture
         pictureRef={pictureRefs[1]}
         texture={pictures[1]}
-        position={[-2.39, 0, 2.5]}
+        position={[-ROOM_HALF_WIDTH + 0.11, 0, 2.5]}
         rotation={[0, Math.PI / 2, 0]}
       />
       <GalleryPicture
         pictureRef={pictureRefs[2]}
         texture={pictures[2]}
-        position={[2.39, 0, -2.5]}
+        position={[ROOM_HALF_WIDTH - 0.11, 0, -2.5]}
         rotation={[0, -Math.PI / 2, 0]}
       />
       <GalleryPicture
         pictureRef={pictureRefs[3]}
         texture={pictures[3]}
-        position={[2.39, 0, 2.5]}
+        position={[ROOM_HALF_WIDTH - 0.11, 0, 2.5]}
         rotation={[0, -Math.PI / 2, 0]}
       />
 
-      <TextPoster text="E-Galerija" position={[0, 0.1, -4.89]} />
+      <TextPoster text={galleryContent.wallTitle} position={[0, 0.15, -ROOM_HALF_LENGTH + 0.11]} />
+
+      <Door ref={doorRef} position={[0, -0.25, ROOM_HALF_LENGTH - 0.11]} rotation={[0, Math.PI, 0]} />
     </group>
   );
 }
@@ -125,6 +123,21 @@ function GalleryPicture({ pictureRef, texture, position, rotation }) {
   );
 }
 
+const Door = React.forwardRef(function Door(props, ref) {
+  return (
+    <group position={props.position} rotation={props.rotation}>
+      <mesh ref={ref}>
+        <planeGeometry args={[1.2, 1.5]} />
+        <meshBasicMaterial color="#9a6a3b" side={DoubleSide} />
+      </mesh>
+      <mesh position={[0.45, 0, 0.01]}>
+        <circleGeometry args={[0.04, 20]} />
+        <meshBasicMaterial color="#f8e39f" side={DoubleSide} />
+      </mesh>
+    </group>
+  );
+});
+
 function TextPoster({ text, position }) {
   return (
     <group position={position}>
@@ -136,27 +149,22 @@ function TextPoster({ text, position }) {
         <planeGeometry args={[3.5, 0.65]} />
         <meshBasicMaterial color="#fef3c7" side={DoubleSide} />
       </mesh>
-      <Text
-        position={[0, 0, 0.03]}
-        fontSize={0.32}
-        color="#111827"
-        anchorX="center"
-        anchorY="middle"
-      >
+      <Text position={[0, 0, 0.03]} fontSize={0.32} color="#111827" anchorX="center" anchorY="middle">
         {text}
       </Text>
     </group>
   );
 }
 
-function PlayerCamera({ onKeysChange, playerPosRef }) {
+function PlayerCamera({ onKeysChange, playerPosRef, viewMode }) {
   const { camera } = useThree();
   const keys = useRef({ w: false, a: false, s: false, d: false, space: false });
   const velocityRef = useRef([0, 0, 0]);
-  const positionRef = useRef([0, 0, 0]);
+  const positionRef = useRef([...PLAYER_START]);
+
   const [ref, api] = useSphere(() => ({
     mass: 1,
-    position: [0, -0.2, 0],
+    position: PLAYER_START,
     args: [0.35],
     linearDamping: 0.95,
     angularDamping: 1,
@@ -177,6 +185,7 @@ function PlayerCamera({ onKeysChange, playerPosRef }) {
         syncKeys();
       }
     };
+
     const onKeyUp = (event) => {
       const key = event.key.toLowerCase();
       const mapped = key === " " ? "space" : key;
@@ -185,6 +194,7 @@ function PlayerCamera({ onKeysChange, playerPosRef }) {
         syncKeys();
       }
     };
+
     window.addEventListener("keydown", onKeyDown);
     window.addEventListener("keyup", onKeyUp);
     return () => {
@@ -196,13 +206,38 @@ function PlayerCamera({ onKeysChange, playerPosRef }) {
   const forward = useRef(new Vector3());
   const right = useRef(new Vector3());
   const move = useRef(new Vector3());
+  const cameraOffset = useRef(new Vector3(0, 1.15, 2.2));
+  const rotatedOffset = useRef(new Vector3());
 
   useFrame(() => {
-    camera.position.set(positionRef.current[0], positionRef.current[1], positionRef.current[2]);
+    if (viewMode === "first") {
+      const camX = positionRef.current[0];
+      const camY = positionRef.current[1] + 0.35;
+      const camZ = positionRef.current[2];
+      camera.position.set(camX, camY, camZ);
+    } else {
+      rotatedOffset.current.copy(cameraOffset.current).applyQuaternion(camera.quaternion);
+      const desiredX = positionRef.current[0] + rotatedOffset.current.x;
+      const desiredY = positionRef.current[1] + rotatedOffset.current.y;
+      const desiredZ = positionRef.current[2] + rotatedOffset.current.z;
+
+      const camMargin = 0.2;
+      const minX = -ROOM_HALF_WIDTH + camMargin;
+      const maxX = ROOM_HALF_WIDTH - camMargin;
+      const minZ = -ROOM_HALF_LENGTH + camMargin;
+      const maxZ = ROOM_HALF_LENGTH - camMargin;
+      const minY = -ROOM_HALF_HEIGHT + camMargin;
+      const maxY = ROOM_HALF_HEIGHT - camMargin;
+
+      camera.position.set(
+        Math.max(minX, Math.min(maxX, desiredX)),
+        Math.max(minY, Math.min(maxY, desiredY)),
+        Math.max(minZ, Math.min(maxZ, desiredZ))
+      );
+    }
     playerPosRef.current = [...positionRef.current];
 
     move.current.set(0, 0, 0);
-
     camera.getWorldDirection(forward.current);
     forward.current.y = 0;
     forward.current.normalize();
@@ -225,14 +260,20 @@ function PlayerCamera({ onKeysChange, playerPosRef }) {
   });
 
   return (
-    <mesh ref={ref} visible={false}>
-      <sphereGeometry args={[0.35, 8, 8]} />
-      <meshBasicMaterial color="#ffffff" />
-    </mesh>
+    <group ref={ref}>
+      <mesh position={[0, -0.38, 0]}>
+        <capsuleGeometry args={[0.22, 0.65, 8, 16]} />
+        <meshBasicMaterial color="#1f2937" />
+      </mesh>
+      <mesh position={[0, 0.15, 0]}>
+        <sphereGeometry args={[0.18, 16, 16]} />
+        <meshBasicMaterial color="#f1c27d" />
+      </mesh>
+    </group>
   );
 }
 
-function InteractionDetector({ pictureRefs, pictureLinks, playerPosRef, onInteractableChange }) {
+function InteractionDetector({ interactables, playerPosRef, onInteractableChange }) {
   const { camera } = useThree();
   const raycasterRef = useRef(new Raycaster());
   const centerRef = useRef(new Vector2(0, 0));
@@ -242,198 +283,182 @@ function InteractionDetector({ pictureRefs, pictureLinks, playerPosRef, onIntera
     const raycaster = raycasterRef.current;
     raycaster.setFromCamera(centerRef.current, camera);
 
-    const objects = pictureRefs.map((r) => r.current).filter(Boolean);
-    if (objects.length === 0) {
+    const activeTargets = interactables.filter((x) => x.ref.current);
+    if (activeTargets.length === 0) {
       onInteractableChange(null);
       return;
     }
 
-    const intersections = raycaster.intersectObjects(objects, false);
+    const objects = activeTargets.map((x) => x.ref.current);
+    const intersections = raycaster.intersectObjects(objects, true);
     if (intersections.length === 0) {
       onInteractableChange(null);
       return;
     }
 
-    const hitObject = intersections[0].object;
-    const index = objects.findIndex((obj) => obj === hitObject);
-    if (index === -1) {
+    const hit = intersections[0].object;
+    const target = activeTargets.find((x) => x.ref.current === hit);
+    if (!target) {
       onInteractableChange(null);
       return;
     }
 
-    const picPos = objects[index].getWorldPosition(tempPos.current);
-    const dx = playerPosRef.current[0] - picPos.x;
-    const dy = playerPosRef.current[1] - picPos.y;
-    const dz = playerPosRef.current[2] - picPos.z;
+    const targetPos = target.ref.current.getWorldPosition(tempPos.current);
+    const dx = playerPosRef.current[0] - targetPos.x;
+    const dy = playerPosRef.current[1] - targetPos.y;
+    const dz = playerPosRef.current[2] - targetPos.z;
     const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
-    if (distance <= 2.2) {
-      onInteractableChange(pictureLinks[index]);
-    } else {
-      onInteractableChange(null);
-    }
+    onInteractableChange(distance <= target.distance ? target : null);
   });
 
   return null;
 }
 
-export default function App() {
+function GalleryPage({ onBackHome }) {
   const controlsRef = useRef(null);
   const [locked, setLocked] = useState(false);
   const [pressed, setPressed] = useState({ w: false, a: false, s: false, d: false, space: false });
-  const [activeLink, setActiveLink] = useState(null);
-  const playerPosRef = useRef([0, 0, 0]);
+  const [activeInteractable, setActiveInteractable] = useState(null);
+  const [viewMode, setViewMode] = useState("first");
+
+  const playerPosRef = useRef([...PLAYER_START]);
   const pictureRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
-  const pictureLinks = [
-    "https://en.wikipedia.org/wiki/Art_gallery",
-    "https://en.wikipedia.org/wiki/Painting",
-    "https://en.wikipedia.org/wiki/Modern_art",
-    "https://en.wikipedia.org/wiki/Sculpture",
-  ];
+  const doorRef = useRef(null);
+
+  const interactables = useMemo(
+    () => [
+      { ref: pictureRefs[0], label: galleryContent.pictures[0].prompt, url: galleryContent.pictures[0].link, distance: 2.2, sameTab: false },
+      { ref: pictureRefs[1], label: galleryContent.pictures[1].prompt, url: galleryContent.pictures[1].link, distance: 2.2, sameTab: false },
+      { ref: pictureRefs[2], label: galleryContent.pictures[2].prompt, url: galleryContent.pictures[2].link, distance: 2.2, sameTab: false },
+      { ref: pictureRefs[3], label: galleryContent.pictures[3].prompt, url: galleryContent.pictures[3].link, distance: 2.2, sameTab: false },
+      { ref: doorRef, label: "Press E to Go Home", url: "#", distance: 2.8, sameTab: true },
+    ],
+    []
+  );
 
   useEffect(() => {
     const onKeyDown = (event) => {
-      if (event.key.toLowerCase() === "e" && activeLink) {
-        window.open(activeLink, "_blank", "noopener,noreferrer");
+      if (event.key.toLowerCase() === "e" && activeInteractable?.url) {
+        if (activeInteractable.sameTab) {
+          onBackHome();
+        } else {
+          window.open(activeInteractable.url, "_blank", "noopener,noreferrer");
+        }
       }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [activeLink]);
+  }, [activeInteractable, onBackHome]);
 
   return (
     <>
-      <div
-        style={{
-          position: "fixed",
-          top: 12,
-          left: 12,
-          zIndex: 10,
-          padding: "8px 10px",
-          borderRadius: 8,
-          background: "rgba(0,0,0,0.7)",
-          color: "white",
-          fontFamily: "system-ui, sans-serif",
-          fontSize: 13,
-        }}
-      >
-        Step 7: Picture interaction enabled
-      </div>
+      <div style={badgeStyle(12, 12)}>E-Galerija</div>
       <button
         type="button"
         onClick={() => {
           if (!controlsRef.current) return;
-          if (locked) {
-            controlsRef.current.unlock();
-          } else {
-            controlsRef.current.lock();
-          }
+          if (locked) controlsRef.current.unlock();
+          else controlsRef.current.lock();
         }}
-        style={{
-          position: "fixed",
-          top: 12,
-          right: 12,
-          zIndex: 30,
-          border: "none",
-          borderRadius: 8,
-          padding: "10px 14px",
-          background: "#111827",
-          color: "#fff",
-          fontFamily: "system-ui, sans-serif",
-          fontSize: 14,
-          cursor: "pointer",
-        }}
+        style={lockBtnStyle}
       >
         {locked ? "Unlock Pointer" : "Lock Pointer"}
+      </button>
+      <button
+        type="button"
+        onClick={() => setViewMode((m) => (m === "first" ? "third" : "first"))}
+        style={modeBtnStyle}
+      >
+        {viewMode === "first" ? "Switch to Third Person" : "Switch to First Person"}
       </button>
 
       <Canvas
         camera={{ position: [0, 0, 0], fov: 90, near: 0.1, far: 100 }}
         style={{ width: "100vw", height: "100vh", background: "#0f172a" }}
         gl={{ antialias: false, alpha: false }}
-        onCreated={({ camera }) => {
-          camera.lookAt(0, 0, -5);
-        }}
+        onCreated={({ camera }) => camera.lookAt(0, 0, -ROOM_HALF_LENGTH)}
       >
         <Physics gravity={[0, -9.81, 0]}>
           <FloorPhysics />
           <WallPhysics />
-          <Room pictureRefs={pictureRefs} />
-          <PlayerCamera onKeysChange={setPressed} playerPosRef={playerPosRef} />
+          <Room pictureRefs={pictureRefs} doorRef={doorRef} />
+          <PlayerCamera onKeysChange={setPressed} playerPosRef={playerPosRef} viewMode={viewMode} />
           <InteractionDetector
-            pictureRefs={pictureRefs}
-            pictureLinks={pictureLinks}
+            interactables={interactables}
             playerPosRef={playerPosRef}
-            onInteractableChange={setActiveLink}
+            onInteractableChange={setActiveInteractable}
           />
-          <PointerLockControls
-            ref={controlsRef}
-            onLock={() => setLocked(true)}
-            onUnlock={() => setLocked(false)}
-          />
+          <PointerLockControls ref={controlsRef} onLock={() => setLocked(true)} onUnlock={() => setLocked(false)} />
         </Physics>
       </Canvas>
-      <div
-        style={{
-          position: "fixed",
-          right: 16,
-          bottom: 16,
-          zIndex: 35,
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 52px)",
-          gridTemplateRows: "repeat(3, 52px)",
-          gap: 6,
-          pointerEvents: "none",
-        }}
-      >
-        <KeyBox label="W" active={pressed.w} col={2} row={1} />
-        <KeyBox label="A" active={pressed.a} col={1} row={2} />
-        <KeyBox label="S" active={pressed.s} col={2} row={2} />
-        <KeyBox label="D" active={pressed.d} col={3} row={2} />
-        <KeyBox label="SPACE" active={pressed.space} col={1} row={3} span={3} />
-      </div>
-      {!locked && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            display: "grid",
-            placeItems: "center",
-            color: "#fff",
-            fontFamily: "system-ui, sans-serif",
-            fontSize: 20,
-            letterSpacing: "0.04em",
-            textTransform: "uppercase",
-            background: "rgba(5, 10, 20, 0.2)",
-            pointerEvents: "none",
-            zIndex: 20,
-          }}
-        >
-          Click Lock Pointer to Look Around
-        </div>
-      )}
-      {locked && activeLink && (
-        <div
-          style={{
-            position: "fixed",
-            left: "50%",
-            bottom: 24,
-            transform: "translateX(-50%)",
-            zIndex: 40,
-            padding: "10px 14px",
-            borderRadius: 10,
-            background: "rgba(17, 24, 39, 0.92)",
-            color: "#fff",
-            fontFamily: "system-ui, sans-serif",
-            fontSize: 16,
-            letterSpacing: "0.02em",
-            border: "1px solid #60a5fa",
-          }}
-        >
-          Press E to Open Artwork Link
-        </div>
+
+      <WASDOverlay pressed={pressed} />
+
+      {!locked && <div style={centerOverlayStyle}>Click Lock Pointer to Look Around</div>}
+
+      {locked && activeInteractable && (
+        <div style={interactionPromptStyle}>{activeInteractable.label}</div>
       )}
     </>
+  );
+}
+
+function HomePage({ onEnterGallery }) {
+  return (
+    <main style={homeWrapStyle}>
+      <section style={homeCardStyle}>
+        <h1 style={homeTitleStyle}>{homeContent.name}</h1>
+        <p style={homeTextStyle}>
+          {homeContent.intro}
+        </p>
+        <p style={homeTextStyle}>
+          {homeContent.details}
+        </p>
+        <div style={homeActionsStyle}>
+          <button type="button" onClick={onEnterGallery} style={primaryBtnStyle}>
+            Enter E-Galerija
+          </button>
+          <a href={GITHUB_URL} target="_blank" rel="noreferrer" style={ghostLinkStyle}>
+            GitHub Profile
+          </a>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+export default function App() {
+  const [page, setPage] = useState(() => (window.location.hash === "#gallery" ? "gallery" : "home"));
+
+  useEffect(() => {
+    const onHash = () => setPage(window.location.hash === "#gallery" ? "gallery" : "home");
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+
+  const openGallery = () => {
+    window.location.hash = "gallery";
+    setPage("gallery");
+  };
+
+  const openHome = () => {
+    window.location.hash = "";
+    setPage("home");
+  };
+
+  return page === "gallery" ? <GalleryPage onBackHome={openHome} /> : <HomePage onEnterGallery={openGallery} />;
+}
+
+function WASDOverlay({ pressed }) {
+  return (
+    <div style={wasdWrapStyle}>
+      <KeyBox label="W" active={pressed.w} col={2} row={1} />
+      <KeyBox label="A" active={pressed.a} col={1} row={2} />
+      <KeyBox label="S" active={pressed.s} col={2} row={2} />
+      <KeyBox label="D" active={pressed.d} col={3} row={2} />
+      <KeyBox label="SPACE" active={pressed.space} col={1} row={3} span={3} />
+    </div>
   );
 }
 
@@ -459,3 +484,146 @@ function KeyBox({ label, active, col, row, span = 1 }) {
     </div>
   );
 }
+
+const badgeStyle = (top, left) => ({
+  position: "fixed",
+  top,
+  left,
+  zIndex: 20,
+  padding: "8px 10px",
+  borderRadius: 8,
+  background: "rgba(0,0,0,0.7)",
+  color: "white",
+  fontFamily: "system-ui, sans-serif",
+  fontSize: 13,
+});
+
+const lockBtnStyle = {
+  position: "fixed",
+  top: 12,
+  right: 12,
+  zIndex: 30,
+  border: "none",
+  borderRadius: 8,
+  padding: "10px 14px",
+  background: "#111827",
+  color: "#fff",
+  fontFamily: "system-ui, sans-serif",
+  fontSize: 14,
+  cursor: "pointer",
+};
+
+const modeBtnStyle = {
+  position: "fixed",
+  top: 12,
+  right: 168,
+  zIndex: 30,
+  border: "none",
+  borderRadius: 8,
+  padding: "10px 14px",
+  background: "#334155",
+  color: "#fff",
+  fontFamily: "system-ui, sans-serif",
+  fontSize: 14,
+  cursor: "pointer",
+};
+
+const wasdWrapStyle = {
+  position: "fixed",
+  right: 16,
+  bottom: 16,
+  zIndex: 35,
+  display: "grid",
+  gridTemplateColumns: "repeat(3, 52px)",
+  gridTemplateRows: "repeat(3, 52px)",
+  gap: 6,
+  pointerEvents: "none",
+};
+
+const centerOverlayStyle = {
+  position: "fixed",
+  inset: 0,
+  display: "grid",
+  placeItems: "center",
+  color: "#fff",
+  fontFamily: "system-ui, sans-serif",
+  fontSize: 20,
+  letterSpacing: "0.04em",
+  textTransform: "uppercase",
+  background: "rgba(5, 10, 20, 0.2)",
+  pointerEvents: "none",
+  zIndex: 20,
+};
+
+const interactionPromptStyle = {
+  position: "fixed",
+  left: "50%",
+  bottom: 24,
+  transform: "translateX(-50%)",
+  zIndex: 40,
+  padding: "10px 14px",
+  borderRadius: 10,
+  background: "rgba(17, 24, 39, 0.92)",
+  color: "#fff",
+  fontFamily: "system-ui, sans-serif",
+  fontSize: 16,
+  letterSpacing: "0.02em",
+  border: "1px solid #60a5fa",
+};
+
+const homeWrapStyle = {
+  minHeight: "100vh",
+  display: "grid",
+  placeItems: "center",
+  background: "linear-gradient(160deg, #0b1222 0%, #1d335a 45%, #2f4f84 100%)",
+  padding: "24px",
+};
+
+const homeCardStyle = {
+  width: "min(860px, 94vw)",
+  background: "rgba(255, 255, 255, 0.94)",
+  border: "1px solid rgba(255,255,255,0.7)",
+  borderRadius: "18px",
+  boxShadow: "0 25px 80px rgba(0,0,0,0.28)",
+  padding: "34px 30px",
+  fontFamily: "system-ui, sans-serif",
+};
+
+const homeTitleStyle = {
+  margin: "0 0 12px",
+  fontSize: "clamp(1.8rem, 4vw, 2.6rem)",
+  color: "#111827",
+};
+
+const homeTextStyle = {
+  margin: "0 0 10px",
+  fontSize: "1rem",
+  lineHeight: 1.6,
+  color: "#334155",
+};
+
+const homeActionsStyle = {
+  marginTop: 18,
+  display: "flex",
+  gap: 12,
+  flexWrap: "wrap",
+};
+
+const primaryBtnStyle = {
+  border: "none",
+  borderRadius: 10,
+  padding: "11px 16px",
+  background: "#0f172a",
+  color: "#fff",
+  fontSize: "0.95rem",
+  cursor: "pointer",
+};
+
+const ghostLinkStyle = {
+  border: "1px solid #0f172a",
+  borderRadius: 10,
+  padding: "10px 15px",
+  color: "#0f172a",
+  textDecoration: "none",
+  fontSize: "0.95rem",
+};
