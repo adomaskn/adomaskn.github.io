@@ -1,187 +1,26 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-	<head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-STEFZW1796"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-STEFZW1796');
-    </script>
-		<meta charset="utf-8">
-
-    <link rel="icon" href="./assets/images/main_photo.JPG" />
-		<title>Portfolio of Adomas Knyva</title>
-    <meta name="description" content="A portfolio template for the Unemployables community.">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-		<link rel="stylesheet" href="./css/layout.css">
-    <link rel="stylesheet" href="./css/typography.css">
-    <link rel="stylesheet" href="./css/utilities.css">
-
-		<script defer src="./js/script.js"></script>
-	</head>
-	<body>
-    <!-- NAVBAR -->
-    <div class="navbar">
-      <a class="nav-title-link" href="./index.html">
-        <span class="nav-title">Main Portfolio Page</span>
-        <a class="button" href="mailto:adomas.knyva@gmail.com">
-          <span class="button-text">Contact Me</span>
-        </a>
-      </a>
-    </div>
-
-    <!-- MAIN PAGE CONTENT -->
-    <div id="main-content">
-
-      <!-- PORTFOLIO HEADER -->
-      <div id="portfolio-header">
-        <div id="portfolio-header-image-container">
-          <img src="./assets/images/main_photo.JPG" class="portfolio-header-image">
-          <a class="no-underline" target="_blank" href="https://www.instagram.com/adaslul">
-            <span class="image-caption">Find more pictures of me here</span>
-          </a>
-        </div>
-        <div id="portfolio-header-text-container">
-            <div class="header-text">
-              <span class="main-title">Hey, I'm Adomas Knyva.</span>
-              <div class="body-text">I’m a mathematician / software developer / data analyst who aims to contribute positively to the natural world.</div>
-            </div>
-            <a class="button" id="my-work-link">
-              <span class="button-text">Check out my projects</span> 
-              <image src="./assets/icons/arrow-right.svg" class="right-arrow-icon"/>
-            </a>
-        </div>
-      </div>
-      <div id="about-section">
-        <h2>About Me</h2>
-        <div class="about-section-content">
-          <h3 class="subtitle">Pre-Uni days</h3>
-          <div class="body-text">
-            From my early days, the topics that I have been most interested in were Mathematics, Geography, Physics, and Chemistry.
-            In school, I participated in many national competitions and olympiads to test my skills and I was proficient in these subjects.<br>
-            Given my current involvement in programming, it might be surprising to learn that I didn't study it at all during my school years.
-            To be honest, I did learn some web development, but it wasn't my favorite.
-            However, I had a keen interest in computers themselves and built my own computer from scratch when I was around 15, following a Linus Tech Tips tutorial.
-            Back then, I was an avid gamer and wanted to upgrade from my PS3 to play more exciting games.<br>
-            In addition to all of the aforementioned, I was also in a choir from the 1st grade to the 12th and started playing football around the age of 9.
-            The final grades of my school exams were: 100 for Mathematics and English, 91 for Physics, 84 for Geography, 67 for Lithuanian and Chemistry.
-          </div>
-          <h3 class="subtitle">Uni days</h3>
-          <div class="body-text">
-            I chose the topic that I am going to be studying on a whim. I couldn't decide between Physics and Mathematics, but the latter got my first pick and I got accepted to Vilnius University.
-            My start at the uni (2019) wasn't the best and I even managed to fail a combinatorics class in my first semester (I completed it in an exam retake, so not a big deal).
-            The atmosphere was truly different when compared to school and I struggled with some of my duties at first, but after a few semesters got the hang of it all.
-            The global pandemic which showed it's full force during the end of my first uni year surprisingly helped my in the academic way because during times of no lectures
-            and staying away from my home city with only my new found girlfriend at my side I learned that studying is mainly done on your own.
-            This revelation helped me drastically and changed my view of the world in some ways because now I knew that the only person that can push you towards your goals is YOU.<br>
-            Not to mention uni provided me with something very valuable - basic understanding of programming and its capabilities. 
-            The first course on Informatics was quite a struggle for me because we had to learn Python and without any prior knowledge it looked quite scary from my point of view.
-            Only after about a year of learning it I saw the HUGE capabilities that Python (or any similar language) holds. Then I started to learn it on my phone using the <a href="https://mimo.org/">Mimo app</a> and didn't look back.
-          </div>
-          <h3 class="subtitle">My interests</h3>
-          <ul class="interest-list">
-            <li>Mathematics</li>
-            <li>Ecology</li>
-            <li>Physics</li>
-            <li>Programming</li>
-            <li>Sports (football)</li>
-            <li>Geography</li>
-            <li>Music</li>
-            <li>Chemistry</li>
-            <li>Computer Hardware</li>
-            <li>Gaming</li>
-        </ul>
-          
-        </div>
-      </div>
-
-      <!-- PROJECTS / MY WORK SECTION -->
-      <div id="my-work-section">
-        <!-- TODO - Change the subheader-text to whatever you want the Projects section header to say -->
-        <span class="subheader-text">My Work / My Projects</span>
-
-        <div class="projects-container">
-          <!-- 
-            TODO
-
-            This is where the project cards live. Here's a base level project card for you to copy:
-            <div class="project-card">
-              <img src="./assets/images/IMAGE_NAME" class="project-image">
-              <div class="project-card-text-container">
-                <div class="subheader-text project-title">PROJECT_NAME</div>
-                <div class="body-text project-card-text">SMALL_PROJECT_DESCRIPTION</div>
-              </div>
-              <a class="button" href="./project-pages/PROJECT_PAGE_NAME.html">
-                <span class="button-text">Read More</span>
-                <image src="./assets/icons/arrow-right.svg" class="right-arrow-icon"/>
-              </a>
-            </div>
-
-            - To add a project to the this area, copy the above, paste it below this comment, and change the following:
-                - IMAGE_NAME: the name of the image file in assets/images
-                - PROJECT_NAME: the name of the project (keep it short, it only shows 1 line)
-                - SMALL_PROJECT_DESCRIPTION: a quick project description (max 4 lines)
-                - PROJECT_PAGE_NAME.html: the html filename for the project (must be in project-pages folder)
-          -->
-          <div class="project-card">
-            <img src="./assets/images/desktop.jpeg" class="project-image">
-            <div class="project-card-text-container">
-              <div class="subheader-text project-title">Project Name</div>
-              <div class="body-text project-card-text">Elit pellentesque habitant morbi tristique senectus et netus et. Elementum tempus egestas sed sed risus pretium quam. Nibh ipsum consequat nisl vel pretium</div>
-            </div>
-            <a class="button" href="./project-pages/project-template.html">
-              <span class="button-text">Read More</span>
-              <image src="./assets/icons/arrow-right.svg" class="right-arrow-icon"/>
-            </a>
-          </div>
-          <div class="project-card">
-            <img src="./assets/images/code.jpeg" class="project-image">
-            <div class="project-card-text-container">
-              <div class="subheader-text project-title">Project Name</div>
-              <div class="body-text project-card-text">Elit pellentesque habitant morbi tristique senectus et netus et. Elementum tempus egestas sed sed risus pretium quam. Nibh ipsum consequat nisl vel pretium</div>
-            </div>
-            <a class="button" href="./project-pages/project-template.html">
-              <span class="button-text">Read More</span>
-              <image src="./assets/icons/arrow-right.svg" class="right-arrow-icon"/>
-            </a>
-          </div>
-          <div class="project-card">
-            <img src="./assets/images/sketchbook.jpeg" class="project-image">
-            <div class="project-card-text-container">
-              <div class="subheader-text project-title">Super Long Project Name That Should be Hidden</div>
-              <div class="body-text project-card-text">Elit pellentesque habitant morbi tristique senectus et netus et. Elementum tempus egestas sed sed risus pretium quam. Nibh ipsum consequat nisl vel pretium</div>
-            </div>
-            <a class="button" href="./project-pages/project-template.html">
-              <span class="button-text">Read More</span>
-              <image src="./assets/icons/arrow-right.svg" class="right-arrow-icon"/>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- FOOTER -->
-    <div id="footer">
-      <a class="icon-link" target="_blank" href="https://www.instagram.com/adaslul">
-        <image src="./assets/icons/instagram.svg" class="footer-icon"/>
-      </a>
-      <a class="icon-link" target="_blank" href="https://www.youtube.com/@adomaskn">
-        <image src="./assets/icons/youtube.svg" class="footer-icon"/>
-      </a>
-      <a class="icon-link" target="_blank" href="https://www.linkedin.com/in/adomas-knyva-0404541b3">
-        <image src="./assets/icons/linkedin.svg" class="footer-icon"/>
-      </a>
-      <a class="icon-link" target="_blank" href="https://orcid.org/0009-0005-5742-2866">
-        <image src="./assets/icons/orcid.svg" class="footer-icon"/>
-      </a>
-      <a class="icon-link" href="mailto:adomas.knyva@gmail.com">
-        <image src="./assets/icons/mail.svg" class="footer-icon"/>
-      </a>
-    </div>
-
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D Room CV</title>
+    <style>
+      html,
+      body,
+      #root {
+        width: 100%;
+        min-height: 100%;
+        margin: 0;
+      }
+      body {
+        overflow-y: auto;
+        overflow-x: hidden;
+        background: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
