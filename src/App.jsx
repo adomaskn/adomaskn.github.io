@@ -10,6 +10,17 @@ const ROOM_HALF_LENGTH = 5;
 const ROOM_HALF_HEIGHT = 1;
 const PLAYER_START = [0, 0.2, 0];
 const GITHUB_URL = galleryContent.githubUrl;
+const APP_MODE = (import.meta.env.VITE_APP_MODE ?? "full").toLowerCase();
+const PROFILE_APP_URL = homeContent.profileAppUrl;
+const ROOM_APP_URL = homeContent.roomAppUrl;
+
+function navigateTo(url, fallback) {
+  if (url && typeof url === "string") {
+    window.location.href = url;
+    return;
+  }
+  fallback?.();
+}
 
 function FloorPhysics() {
   usePlane(() => ({
@@ -332,7 +343,7 @@ function GalleryPage({ onBackHome }) {
       { ref: pictureRefs[1], label: galleryContent.pictures[1].prompt, url: galleryContent.pictures[1].link, distance: 2.2, sameTab: false },
       { ref: pictureRefs[2], label: galleryContent.pictures[2].prompt, url: galleryContent.pictures[2].link, distance: 2.2, sameTab: false },
       { ref: pictureRefs[3], label: galleryContent.pictures[3].prompt, url: galleryContent.pictures[3].link, distance: 2.2, sameTab: false },
-      { ref: doorRef, label: "Press E to Go Home", url: "#", distance: 2.8, sameTab: true },
+      { ref: doorRef, label: "Press E to Go Home", url: PROFILE_APP_URL, distance: 2.8, sameTab: true },
     ],
     []
   );
@@ -341,7 +352,7 @@ function GalleryPage({ onBackHome }) {
     const onKeyDown = (event) => {
       if (event.key.toLowerCase() === "e" && activeInteractable?.url) {
         if (activeInteractable.sameTab) {
-          onBackHome();
+          navigateTo(activeInteractable.url, onBackHome);
         } else {
           window.open(activeInteractable.url, "_blank", "noopener,noreferrer");
         }
@@ -451,7 +462,11 @@ function HomePage({ onEnterGallery }) {
             <h2 style={projectTitleStyle}>{homeContent.featuredProject.title}</h2>
             <p style={projectSubStyle}>{homeContent.featuredProject.subtitle}</p>
             <p style={homeTextStyle}>{homeContent.featuredProject.summary}</p>
-            <button type="button" onClick={onEnterGallery} style={primaryBtnStyle}>
+            <button
+              type="button"
+              onClick={() => navigateTo(ROOM_APP_URL, onEnterGallery)}
+              style={primaryBtnStyle}
+            >
               {homeContent.featuredProject.cta}
             </button>
           </article>
@@ -494,6 +509,14 @@ export default function App() {
     window.location.hash = "";
     setPage("home");
   };
+
+  if (APP_MODE === "profile") {
+    return <HomePage onEnterGallery={openGallery} />;
+  }
+
+  if (APP_MODE === "room") {
+    return <GalleryPage onBackHome={openHome} />;
+  }
 
   return page === "gallery" ? <GalleryPage onBackHome={openHome} /> : <HomePage onEnterGallery={openGallery} />;
 }

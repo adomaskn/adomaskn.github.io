@@ -26,6 +26,8 @@ export const galleryContent = {
 };
 
 export const homeContent = {
+  profileAppUrl: "https://adomaskn.github.io/",
+  roomAppUrl: "https://adomaskn.github.io/#gallery",
   name: "Adomas K",
   role: "Developer and Builder",
   heroTitle: "Hey, I'm Adomas Knyva.",
