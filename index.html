@@ -3,24 +3,232 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3D Room CV</title>
+    <title>Adomas K | Portfolio</title>
     <style>
-      html,
-      body,
-      #root {
-        width: 100%;
-        min-height: 100%;
-        margin: 0;
+      :root {
+        --bg-1: #0b1222;
+        --bg-2: #1d335a;
+        --bg-3: #2f4f84;
+        --card-bg: rgba(255, 255, 255, 0.94);
+        --text-main: #334155;
+        --text-strong: #0f172a;
+        --text-soft: #64748b;
+        --accent: #0f172a;
+        --line: #dbe4f0;
       }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
       body {
-        overflow-y: auto;
-        overflow-x: hidden;
-        background: #000;
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--text-main);
+        background: linear-gradient(160deg, var(--bg-1) 0%, var(--bg-2) 45%, var(--bg-3) 100%);
+        padding: 24px;
+      }
+
+      .wrap {
+        min-height: calc(100vh - 48px);
+        display: grid;
+        place-items: center;
+      }
+
+      .card {
+        width: min(860px, 94vw);
+        background: var(--card-bg);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        border-radius: 18px;
+        box-shadow: 0 25px 80px rgba(0, 0, 0, 0.28);
+        padding: 34px 30px;
+      }
+
+      .role {
+        margin: 0 0 10px;
+        font-size: 0.85rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #475569;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(1.8rem, 4vw, 2.6rem);
+        color: #111827;
+      }
+
+      p {
+        margin: 0 0 10px;
+        line-height: 1.6;
+      }
+
+      .profile-link {
+        display: inline-flex;
+        flex-direction: column;
+        text-decoration: none;
+        margin: 8px 0 14px;
+      }
+
+      .profile-link img {
+        width: min(220px, 40vw);
+        border-radius: 12px;
+        border: 1px solid var(--line);
+      }
+
+      .caption {
+        margin-top: 8px;
+        font-size: 0.85rem;
+        color: #475569;
+      }
+
+      .section {
+        margin-top: 20px;
+      }
+
+      .section-title {
+        margin: 0 0 10px;
+        font-size: 0.9rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--text-soft);
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+        background: #f8fafc;
+      }
+
+      h2,
+      h3 {
+        color: var(--text-strong);
+      }
+
+      h2 {
+        margin: 0 0 4px;
+        font-size: 1.3rem;
+      }
+
+      h3 {
+        margin: 0 0 8px;
+        font-size: 1rem;
+      }
+
+      .sub {
+        margin: 0 0 10px;
+        color: #475569;
+        font-size: 0.95rem;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 20px;
+        line-height: 1.7;
+      }
+
+      .actions {
+        margin-top: 10px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .btn,
+      .pill {
+        border-radius: 10px;
+        padding: 10px 15px;
+        font-size: 0.95rem;
+        text-decoration: none;
+      }
+
+      .btn {
+        border: none;
+        display: inline-block;
+        background: var(--accent);
+        color: #fff;
+      }
+
+      .pill {
+        border: 1px solid var(--accent);
+        color: var(--accent);
+      }
+
+      .meta {
+        margin: 14px 0 0;
+        color: var(--text-soft);
+        font-size: 0.92rem;
       }
     </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <main class="wrap">
+      <section class="card">
+        <header>
+          <p class="role">Developer and Builder</p>
+          <h1>Hey, I'm Adomas Knyva.</h1>
+          <a class="profile-link" href="https://www.instagram.com/adaslul" target="_blank" rel="noreferrer">
+            <img src="/images/main_photo.JPG" alt="Adomas K" />
+            <span class="caption">Find more pictures of me here</span>
+          </a>
+          <p>I'm a mathematician / software developer / data analyst who aims to contribute positively to the natural world.</p>
+          <p>Personal portfolio and playground for public projects, experiments, and interactive web ideas.</p>
+        </header>
+
+        <section class="section">
+          <p class="section-title">About Me</p>
+          <article class="panel">
+            <h3>Pre-Uni days</h3>
+            <p>From my early days, the topics that I have been most interested in were Mathematics, Geography, Physics, and Chemistry. In school, I participated in many national competitions and olympiads to test my skills and I was proficient in these subjects. Given my current involvement in programming, it might be surprising to learn that I didn't study it at all during my school years. To be honest, I did learn some web development, but it wasn't my favorite. However, I had a keen interest in computers themselves and built my own computer from scratch when I was around 15, following a Linus Tech Tips tutorial. Back then, I was an avid gamer and wanted to upgrade from my PS3 to play more exciting games. In addition to all of the aforementioned, I was also in a choir from the 1st grade to the 12th and started playing football around the age of 9.</p>
+
+            <h3>Uni days</h3>
+            <p>I chose the topic that I am going to be studying on a whim. I couldn't decide between Physics and Mathematics, but the latter got my first pick and I got accepted to Vilnius University. My start at the uni (2019) wasn't the best and I even managed to fail a combinatorics class in my first semester. The global pandemic surprisingly helped me academically because I learned that studying is mainly done on your own. This changed my view because now I knew that the only person that can push you towards your goals is YOU. Uni also gave me a basic understanding of programming and its capabilities. I started learning Python and later deepened it through self-learning and the Mimo app.</p>
+
+            <h3>My Interests</h3>
+            <ul>
+              <li>Mathematics</li>
+              <li>Ecology</li>
+              <li>Physics</li>
+              <li>Programming</li>
+              <li>Sports (football)</li>
+              <li>Geography</li>
+              <li>Music</li>
+              <li>Chemistry</li>
+              <li>Computer Hardware</li>
+              <li>Gaming</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="section">
+          <p class="section-title">Featured Project</p>
+          <article class="panel">
+            <h2>E-Galerija</h2>
+            <p class="sub">Interactive 3D Gallery</p>
+            <p>A first- and third-person web gallery built with React Three Fiber, physics movement, in-world interactions, and configurable artwork links.</p>
+            <a class="btn" href="https://adomaskn.github.io/virtual-gallery/">Open Project</a>
+          </article>
+        </section>
+
+        <section class="section">
+          <p class="section-title">Contact</p>
+          <div class="actions">
+            <a class="pill" href="mailto:adomas.knyva@gmail.com">adomas.knyva@gmail.com</a>
+            <a class="pill" href="https://github.com/adomaskn" target="_blank" rel="noreferrer">GitHub</a>
+            <a class="pill" href="https://www.instagram.com/adaslul" target="_blank" rel="noreferrer">Instagram</a>
+            <a class="pill" href="https://www.youtube.com/@adomaskn" target="_blank" rel="noreferrer">YouTube</a>
+            <a class="pill" href="https://www.linkedin.com/in/adomas-knyva-0404541b3" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a class="pill" href="https://orcid.org/0009-0005-5742-2866" target="_blank" rel="noreferrer">ORCID</a>
+          </div>
+          <p class="meta">Location: Lithuania</p>
+        </section>
+      </section>
+    </main>
   </body>
 </html>
