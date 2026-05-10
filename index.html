@@ -91,6 +91,10 @@
         margin-top: 20px;
       }
 
+      .section:first-of-type {
+        margin-top: 24px;
+      }
+
       .section-title {
         margin: 0 0 10px;
         font-size: 0.9rem;
@@ -158,6 +162,41 @@
       .pill {
         border: 1px solid var(--accent);
         color: var(--accent);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .icon {
+        width: 16px;
+        height: 16px;
+      }
+
+      .about-toggle {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #f8fafc;
+        overflow: hidden;
+      }
+
+      .about-toggle summary {
+        cursor: pointer;
+        list-style: none;
+        padding: 14px 16px;
+        font-weight: 600;
+        color: var(--text-strong);
+      }
+
+      .about-toggle summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .about-toggle[open] summary {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .about-content {
+        padding: 16px;
       }
 
       .meta {
@@ -171,7 +210,7 @@
     <main class="wrap">
       <section class="card">
         <header>
-          <p class="role">Developer and Builder</p>
+          <p class="role">Software Developer / AI Engineer</p>
           <h1>Hey, I'm Adomas Knyva.</h1>
           <a class="profile-link" href="https://www.instagram.com/adaslul" target="_blank" rel="noreferrer">
             <img src="/images/main_photo.JPG" alt="Adomas K" />
@@ -182,8 +221,20 @@
         </header>
 
         <section class="section">
-          <p class="section-title">About Me</p>
+          <p class="section-title">Featured Projects</p>
           <article class="panel">
+            <h2>E-Galerija</h2>
+            <p class="sub">Interactive 3D Gallery</p>
+            <p>A first- and third-person web gallery built with React Three Fiber, physics movement, in-world interactions, and configurable artwork links.</p>
+            <a class="btn" href="https://adomaskn.github.io/virtual-gallery/">Open Project</a>
+          </article>
+        </section>
+
+        <section class="section">
+          <p class="section-title">About Me</p>
+          <details class="about-toggle">
+            <summary>Read About Me</summary>
+            <article class="about-content">
             <h3>Pre-Uni days</h3>
             <p>From my early days, the topics that I have been most interested in were Mathematics, Geography, Physics, and Chemistry. In school, I participated in many national competitions and olympiads to test my skills and I was proficient in these subjects. Given my current involvement in programming, it might be surprising to learn that I didn't study it at all during my school years. To be honest, I did learn some web development, but it wasn't my favorite. However, I had a keen interest in computers themselves and built my own computer from scratch when I was around 15, following a Linus Tech Tips tutorial. Back then, I was an avid gamer and wanted to upgrade from my PS3 to play more exciting games. In addition to all of the aforementioned, I was also in a choir from the 1st grade to the 12th and started playing football around the age of 9.</p>
 
@@ -203,28 +254,18 @@
               <li>Computer Hardware</li>
               <li>Gaming</li>
             </ul>
-          </article>
-        </section>
-
-        <section class="section">
-          <p class="section-title">Featured Project</p>
-          <article class="panel">
-            <h2>E-Galerija</h2>
-            <p class="sub">Interactive 3D Gallery</p>
-            <p>A first- and third-person web gallery built with React Three Fiber, physics movement, in-world interactions, and configurable artwork links.</p>
-            <a class="btn" href="https://adomaskn.github.io/virtual-gallery/">Open Project</a>
-          </article>
+            </article>
+          </details>
         </section>
 
         <section class="section">
           <p class="section-title">Contact</p>
           <div class="actions">
-            <a class="pill" href="mailto:adomas.knyva@gmail.com">adomas.knyva@gmail.com</a>
-            <a class="pill" href="https://github.com/adomaskn" target="_blank" rel="noreferrer">GitHub</a>
-            <a class="pill" href="https://www.instagram.com/adaslul" target="_blank" rel="noreferrer">Instagram</a>
-            <a class="pill" href="https://www.youtube.com/@adomaskn" target="_blank" rel="noreferrer">YouTube</a>
-            <a class="pill" href="https://www.linkedin.com/in/adomas-knyva-0404541b3" target="_blank" rel="noreferrer">LinkedIn</a>
-            <a class="pill" href="https://orcid.org/0009-0005-5742-2866" target="_blank" rel="noreferrer">ORCID</a>
+            <a class="pill" href="https://github.com/adomaskn" target="_blank" rel="noreferrer"><img class="icon" src="/assets/icons/github.svg" alt="" />GitHub</a>
+            <a class="pill" href="https://www.instagram.com/adaslul" target="_blank" rel="noreferrer"><img class="icon" src="/assets/icons/instagram.svg" alt="" />Instagram</a>
+            <a class="pill" href="https://www.youtube.com/@adomaskn" target="_blank" rel="noreferrer"><img class="icon" src="/assets/icons/youtube.svg" alt="" />YouTube</a>
+            <a class="pill" href="https://www.linkedin.com/in/adomas-knyva-0404541b3" target="_blank" rel="noreferrer"><img class="icon" src="/assets/icons/linkedin.svg" alt="" />LinkedIn</a>
+            <a class="pill" href="https://orcid.org/0009-0005-5742-2866" target="_blank" rel="noreferrer"><img class="icon" src="/assets/icons/orcid.svg" alt="" />ORCID</a>
           </div>
           <p class="meta">Location: Lithuania</p>
         </section>
