@@ -210,6 +210,10 @@
     <main class="wrap">
       <section class="card">
         <header>
+          <div class="actions" id="language-switcher" style="margin: 0 0 14px">
+            <a class="pill" href="?lang=en" data-lang-switch="en">English</a>
+            <a class="pill" href="?lang=lt" data-lang-switch="lt">Lietuviu</a>
+          </div>
           <p class="role">Software Developer / AI Engineer</p>
           <h1>Hey, I'm Adomas Knyva.</h1>
           <a class="profile-link" href="https://www.instagram.com/adaslul" target="_blank" rel="noreferrer">
@@ -226,13 +230,13 @@
             <h2>E-Galerija</h2>
             <p class="sub">Interactive 3D Gallery</p>
             <p>A first- and third-person web gallery built with React Three Fiber, physics movement, in-world interactions, and configurable artwork links.</p>
-            <a class="btn" href="https://adomaskn.github.io/virtual-gallery/">Open Project</a>
+            <a class="btn" data-preserve-lang="true" href="https://adomaskn.github.io/virtual-gallery/">Open Project</a>
           </article>
           <article class="panel">
             <h2>Car Showroom</h2>
             <p class="sub">Interactive Auto Showcase</p>
             <p>An immersive web showroom experience focused on presenting vehicles with clean visuals, smooth interactions, and clear browsing flow.</p>
-            <a class="btn" href="https://adomaskn.github.io/car-showroom/">Open Project</a>
+            <a class="btn" data-preserve-lang="true" href="https://adomaskn.github.io/car-showroom/">Open Project</a>
           </article>
         </section>
 
@@ -278,4 +282,48 @@
       </section>
     </main>
   </body>
+  <script>
+    (function () {
+      const supportedLangs = ["en", "lt"];
+      const url = new URL(window.location.href);
+      const queryLang = url.searchParams.get("lang");
+      const storedLang = localStorage.getItem("site_lang");
+      const activeLang = supportedLangs.includes(queryLang)
+        ? queryLang
+        : supportedLangs.includes(storedLang)
+          ? storedLang
+          : "en";
+
+      localStorage.setItem("site_lang", activeLang);
+      document.documentElement.lang = activeLang;
+
+      if (queryLang !== activeLang) {
+        url.searchParams.set("lang", activeLang);
+        window.history.replaceState({}, "", url.toString());
+      }
+
+      const setLangOnUrl = (href) => {
+        try {
+          const target = new URL(href, window.location.origin);
+          target.searchParams.set("lang", activeLang);
+          return target.toString();
+        } catch (_) {
+          return href;
+        }
+      };
+
+      document.querySelectorAll("a[data-preserve-lang='true']").forEach((link) => {
+        link.href = setLangOnUrl(link.getAttribute("href"));
+      });
+
+      document.querySelectorAll("a[data-lang-switch]").forEach((link) => {
+        const lang = link.getAttribute("data-lang-switch");
+        if (!supportedLangs.includes(lang)) return;
+        link.href = setLangOnUrl(window.location.pathname + window.location.search).replace(
+          /lang=(en|lt)/,
+          "lang=" + lang
+        );
+      });
+    })();
+  </script>
 </html>
