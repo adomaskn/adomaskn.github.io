@@ -1,15 +1,58 @@
-# Personal portfolio created from a template
-A portfolio website from the Unemployables template.
-<br /><br />
-**Original:** https://ndoherty-xyz.github.io/unemployables-portfolio-template/
-<br />
+# adomaskn.github.io
 
-# Aim of this project
+Personal portfolio website hosted on GitHub Pages.
 
-To have an online portfolio that can be used to try out new features and store public information about myself.
+## Overview
 
-# Repository role
+- Main landing page: `index.html`
+- Static assets: `public/`, `assets/`, `css/`, `js/`
+- Build output: `dist/`
+- Build tool: Vite
 
-This repository now serves the profile/portfolio site only.
+## Language Navigation
 
-The 3D room is deployed from a separate repository, and the "Open Project" button URL is configured in `src/contentConfig.js` via `homeContent.roomAppUrl`.
+The site supports language persistence through a `lang` query parameter:
+
+- `?lang=en`
+- `?lang=lt`
+
+Main page behavior:
+
+- Reads language from URL (`lang`) first
+- Falls back to `localStorage` (`site_lang`)
+- Defaults to `en` if not set
+- Preserves language when navigating to project links like:
+  - `https://adomaskn.github.io/virtual-gallery/?lang=...`
+  - `https://adomaskn.github.io/car-showroom/?lang=...`
+
+## Development
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run local dev server:
+
+```bash
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+Preview production build:
+
+```bash
+npm run preview
+```
+
+## Deployment Notes
+
+- `dist/` is generated from `npm run build`.
+- This repository hosts the portfolio site at `https://adomaskn.github.io/`.
+- Project apps like `virtual-gallery` and `car-showroom` are linked as separate pages/apps under the same GitHub Pages domain.
